@@ -16,10 +16,7 @@ class KafkaAT07 < Formula
   def install
     data = var/"lib"
     inreplace "config/server.properties",
-      "log.dirs=/tmp/kafka-logs", "log.dirs=#{data}/kafka-logs"
-
-    inreplace "config/zookeeper.properties",
-      "dataDir=/tmp/zookeeper", "dataDir=#{data}/zookeeper"
+      "log.dir=/tmp/kafka-logs", "log.dir=#{data}/kafka-logs"
 
     libexec.install "libs"
 
