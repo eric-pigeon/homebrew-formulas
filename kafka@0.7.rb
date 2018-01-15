@@ -1,7 +1,7 @@
 class KafkaAT07 < Formula
   desc "Publish-subscribe messaging rethought as a distributed commit log"
   homepage "https://kafka.apache.org/"
-  url "https://dl.bintray.com/eric-pigeon/bottles/kafka%400.7-0.7.2.high_sierra.bottle.tar.gz"
+  url "https://dl.bintray.com/weblinc/mirror/kafka-0.7.2.tar.gz"
   sha256 "6f6c9f6de136feaf49dab892fd54afce33939653470990c8073d7e3db1a0cb38"
 
   depends_on "zookeeper"
