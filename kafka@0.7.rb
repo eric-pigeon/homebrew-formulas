@@ -21,6 +21,7 @@ class KafkaAT07 < Formula
     inreplace "config/zookeeper.properties",
       "dataDir=/tmp/zookeeper", "dataDir=#{data}/zookeeper"
 
+    ohai libexec
     libexec.install "libs"
 
     prefix.install "bin"
