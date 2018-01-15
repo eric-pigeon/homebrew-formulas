@@ -1,13 +1,13 @@
 class KafkaAT07 < Formula
   desc "Publish-subscribe messaging rethought as a distributed commit log"
   homepage "https://kafka.apache.org/"
-  url "https://dl.bintray.com/eric-pigeon/mirror/bottles/kafka%400.7-0.7.2.high_sierra.bottle.tar.gz"
-  sha256 "ac599982a3f4b368c0d76dd399da4522785cd94de0c1b36fc2a2deb22df9f7ef"
+  url "https://dl.bintray.com/eric-pigeon/bottles/kafka%400.7-0.7.2.high_sierra.bottle.tar.gz"
+  sha256 "6f6c9f6de136feaf49dab892fd54afce33939653470990c8073d7e3db1a0cb38"
 
   bottle do
     cellar :any_skip_relocation
-    root_url "https://dl.bintray.com/eric-pigeon/mirror/bottles"
-    sha256 "ac599982a3f4b368c0d76dd399da4522785cd94de0c1b36fc2a2deb22df9f7ef" => :high_sierra
+    root_url "https://dl.bintray.com/eric-pigeon/bottles"
+    sha256 "6f6c9f6de136feaf49dab892fd54afce33939653470990c8073d7e3db1a0cb38" => :high_sierra
   end
 
   depends_on "zookeeper"
@@ -21,12 +21,10 @@ class KafkaAT07 < Formula
     inreplace "config/zookeeper.properties",
       "dataDir=/tmp/zookeeper", "dataDir=#{data}/zookeeper"
 
-    ohai libexec
     libexec.install "libs"
 
     prefix.install "bin"
     bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
-    puts bin
     Dir["#{bin}/*.sh"].each { |f| mv f, f.to_s.gsub(/.sh$/, "") }
 
     mv "config", "kafka"
