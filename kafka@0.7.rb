@@ -26,6 +26,7 @@ class KafkaAT07 < Formula
 
     prefix.install "bin"
     bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
+    puts bin
     Dir["#{bin}/*.sh"].each { |f| mv f, f.to_s.gsub(/.sh$/, "") }
 
     mv "config", "kafka"
@@ -63,5 +64,40 @@ class KafkaAT07 < Formula
     </dict>
     </plist>
     EOS
+  end
+
+  test do
+    ENV["LOG_DIR"] = "#{testpath}/kafkalog"
+
+    (testpath/"kafka").mkpath
+    cp "#{etc}/kafka/zookeeper.properties", testpath/"kafka"
+    cp "#{etc}/kafka/server.properties", testpath/"kafka"
+    inreplace "#{testpath}/kafka/zookeeper.properties", "#{var}/lib", testpath
+    inreplace "#{testpath}/kafka/server.properties", "#{var}/lib", testpath
+
+    begin
+      fork do
+        exec "#{bin}/zookeeper-server-start #{testpath}/kafka/zookeeper.properties > #{testpath}/test.zookeeper-server-start.log 2>&1"
+      end
+
+      sleep 15
+
+      fork do
+        exec "#{bin}/kafka-server-start #{testpath}/kafka/server.properties > #{testpath}/test.kafka-server-start.log 2>&1"
+      end
+
+      sleep 30
+
+      system "#{bin}/kafka-topics --zookeeper localhost:2181 --create --if-not-exists --replication-factor 1 --partitions 1 --topic test > #{testpath}/kafka/demo.out 2>/dev/null"
+      pipe_output("#{bin}/kafka-console-producer --broker-list localhost:9092 --topic test 2>/dev/null", "test message")
+      system "#{bin}/kafka-console-consumer --zookeeper localhost:2181 --topic test --from-beginning --max-messages 1 >> #{testpath}/kafka/demo.out 2>/dev/null"
+      system "#{bin}/kafka-topics --zookeeper localhost:2181 --delete --topic test >> #{testpath}/kafka/demo.out 2>/dev/null"
+    ensure
+      system "#{bin}/kafka-server-stop"
+      system "#{bin}/zookeeper-server-stop"
+      sleep 10
+    end
+
+    assert_match(/test message/, IO.read("#{testpath}/kafka/demo.out"))
   end
 end
