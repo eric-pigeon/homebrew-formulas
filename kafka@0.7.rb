@@ -4,14 +4,10 @@ class KafkaAT07 < Formula
   url "https://dl.bintray.com/eric-pigeon/bottles/kafka%400.7-0.7.2.high_sierra.bottle.tar.gz"
   sha256 "6f6c9f6de136feaf49dab892fd54afce33939653470990c8073d7e3db1a0cb38"
 
-  bottle do
-    cellar :any_skip_relocation
-    root_url "https://dl.bintray.com/eric-pigeon/bottles"
-    sha256 "6f6c9f6de136feaf49dab892fd54afce33939653470990c8073d7e3db1a0cb38" => :high_sierra
-  end
-
   depends_on "zookeeper"
   depends_on :java => "1.8"
+
+  def pour_bottle?; false; end
 
   def install
     data = var/"lib"
@@ -24,8 +20,8 @@ class KafkaAT07 < Formula
     bin.env_script_all_files(libexec/"bin", Language::Java.java_home_env("1.8"))
     Dir["#{bin}/*.sh"].each { |f| mv f, f.to_s.gsub(/.sh$/, "") }
 
-    mv "config", "kafka"
-    etc.install "kafka"
+    mv "config", "kafka@0.7"
+    etc.install "kafka@0.7"
     libexec.install_symlink etc/"kafka" => "config"
 
     # create directory for kafka stdout+stderr output logs when run by launchd
@@ -46,7 +42,7 @@ class KafkaAT07 < Formula
         <key>ProgramArguments</key>
         <array>
             <string>#{opt_bin}/kafka-server-start</string>
-            <string>#{etc}/kafka/server.properties</string>
+            <string>#{etc}/kafka@0.7/server.properties</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
