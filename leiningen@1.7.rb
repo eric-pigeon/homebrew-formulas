@@ -3,9 +3,7 @@ require 'formula'
 class LeiningenAT17 < Formula
   homepage 'http://github.com/technomancy/leiningen'
   url 'http://github.com/technomancy/leiningen/tarball/1.7.1'
-  md5 'd3f7deb045e0f3430f464553b77b6589'
-
-  head 'https://github.com/technomancy/leiningen.git', :using => :git
+  sha256 '0270981b75cc4497220a50cea29c0929652e79b686beadf16387f1e7604b445e'
 
   def install
     bin.install "bin/lein"
