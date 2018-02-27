@@ -12,6 +12,7 @@ class Nginx < Formula
   end
 
   option "with-passenger", "Compile with support for Phusion Passenger module"
+  option "with-stream-geoip", "Cimple with stream geoip module"
 
   depends_on "openssl" # don't switch to 1.1 until passenger is switched, too
   depends_on "pcre"
