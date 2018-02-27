@@ -17,6 +17,7 @@ class Nginx < Formula
   depends_on "pcre"
   depends_on "passenger" => :optional
   depends_on "geoip" => :optional
+  depends_on "geoip" => "with-stream-geoip"
 
   def install
     # Changes default port to 8080
@@ -81,6 +82,10 @@ class Nginx < Formula
 
     if build.with? "geoip"
       args << "--with-http_geoip_module"
+    end
+
+    if build.with? "stream-geoip"
+      args << "--with-stream_geoip_module"
     end
 
     if build.head?
