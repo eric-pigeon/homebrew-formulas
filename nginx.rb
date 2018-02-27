@@ -17,8 +17,7 @@ class Nginx < Formula
   depends_on "openssl" # don't switch to 1.1 until passenger is switched, too
   depends_on "pcre"
   depends_on "passenger" => :optional
-  depends_on "geoip" => :optional
-  depends_on "geoip" => "with-stream-geoip"
+  depends_on "geoip" if build.with?("geoip") || build.with?("stream-geoip")
 
   def install
     # Changes default port to 8080
